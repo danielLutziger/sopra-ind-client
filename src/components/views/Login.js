@@ -53,19 +53,19 @@ const Login = props => {
                     />
                     <div className="login button-container">
                         <Button
+                            className="login stacked-button-container-left"
+                            width="100%"
+                            onClick={() => doRegistration()}
+                        >
+                            Register now
+                        </Button>
+                        <Button
+                            className="login stacked-button-container-right"
                             disabled={!username || !password}
                             width="100%"
                             onClick={() => doLogin()}
                         >
                             Login
-                        </Button>
-                    </div>
-                    <div className="login button-container">
-                        <Button
-                            width="100%"
-                            onClick={() => doRegistration()}
-                        >
-                            Register now
                         </Button>
                     </div>
                 </div>

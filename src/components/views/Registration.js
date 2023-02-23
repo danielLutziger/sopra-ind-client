@@ -11,13 +11,11 @@ import {FormField} from "../../helpers/formField";
 const Registration = props => {
     const history = useHistory();
     const [password, setPassword] = useState(null);
-    const [birthday, setBirthday] = useState(null);
-    const [name, setName] = useState(null);
     const [username, setUsername] = useState(null);
 
     const doRegistration = async () => {
         try {
-            const requestBody = JSON.stringify({username, password, name, birthday});
+            const requestBody = JSON.stringify({username, password});
             const response = await api.post('/users', requestBody);
 
             // Get the returned user and update a new object.
@@ -44,18 +42,6 @@ const Registration = props => {
                         onChange={un => setUsername(un)}
                     />
                     <FormField
-                        label="Name"
-                        type="name"
-                        value={name}
-                        onChange={un => setName(un)}
-                    />
-                    <FormField
-                        label="Birthday"
-                        type="date"
-                        value={birthday}
-                        onChange={un => setBirthday(un)}
-                    />
-                    <FormField
                         label="Password"
                         type="password"
                         value={password}
@@ -71,7 +57,7 @@ const Registration = props => {
                         </Button>
                         <Button
                             className="login stacked-button-container-right"
-                            disabled={!username || !name || !password}
+                            disabled={!username || !password}
                             width="100%"
                             onClick={() => doRegistration()}
                         >
