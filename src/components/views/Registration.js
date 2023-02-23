@@ -8,14 +8,16 @@ import BaseContainer from "components/ui/BaseContainer";
 import {FormField} from "../../helpers/formField";
 
 
-const Login = props => {
+const Registration = props => {
     const history = useHistory();
     const [password, setPassword] = useState(null);
+    const [birthday, setBirthday] = useState(null);
+    const [name, setName] = useState(null);
     const [username, setUsername] = useState(null);
 
-    const doLogin = async () => {
+    const doRegistration = async () => {
         try {
-            const requestBody = JSON.stringify({username, password});
+            const requestBody = JSON.stringify({username, password, name, birthday});
             const response = await api.post('/users', requestBody);
 
             // Get the returned user and update a new object.
@@ -31,10 +33,6 @@ const Login = props => {
         }
     };
 
-    const doRegistration = () => {
-        history.push(`/registration`);
-    }
-
     return (
         <BaseContainer>
             <div className="login container">
@@ -46,6 +44,18 @@ const Login = props => {
                         onChange={un => setUsername(un)}
                     />
                     <FormField
+                        label="Name"
+                        type="name"
+                        value={name}
+                        onChange={un => setName(un)}
+                    />
+                    <FormField
+                        label="Birthday"
+                        type="date"
+                        value={birthday}
+                        onChange={un => setBirthday(un)}
+                    />
+                    <FormField
                         label="Password"
                         type="password"
                         value={password}
@@ -53,19 +63,19 @@ const Login = props => {
                     />
                     <div className="login button-container">
                         <Button
-                            disabled={!username || !password}
+                            className="login stacked-button-container-left"
                             width="100%"
-                            onClick={() => doLogin()}
+                            onClick={() => history.goBack()}
                         >
-                            Login
+                            Back
                         </Button>
-                    </div>
-                    <div className="login button-container">
                         <Button
+                            className="login stacked-button-container-right"
+                            disabled={!username || !name || !password}
                             width="100%"
                             onClick={() => doRegistration()}
                         >
-                            Register now
+                            Register
                         </Button>
                     </div>
                 </div>
@@ -78,4 +88,4 @@ const Login = props => {
  * You can get access to the history object's properties via the withRouter.
  * withRouter will pass updated match, location, and history props to the wrapped component whenever it renders.
  */
-export default Login;
+export default Registration;
