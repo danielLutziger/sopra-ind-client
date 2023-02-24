@@ -6,16 +6,17 @@ import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
 import BaseContainer from "components/ui/BaseContainer";
 import {FormField} from "../../helpers/formField";
+import {Alert} from "react-bootstrap";
 
 
 const Registration = props => {
     const history = useHistory();
-    const [password, setPassword] = useState(null);
-    const [username, setUsername] = useState(null);
+    const [registrationValues, setRegistrationValues] = useState({ username: "", password: "" });
+    const [notification, setNotification] = useState(false);
 
     const doRegistration = async () => {
         try {
-            const requestBody = JSON.stringify({username, password});
+            const requestBody = JSON.stringify(registrationValues);
             const response = await api.post('/users', requestBody);
 
             // Get the returned user and update a new object.
@@ -31,6 +32,21 @@ const Registration = props => {
         }
     };
 
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        if (name === "username" && /\s/.test(value)) {
+            setNotification(true);
+            return; // Do not update the state if the first name contains spaces
+        } else {
+            setNotification(false);
+        }
+
+        setRegistrationValues((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
     return (
         <BaseContainer>
             <div className="login container">
@@ -38,14 +54,17 @@ const Registration = props => {
                     <FormField
                         label="Username"
                         type="text"
-                        value={username}
-                        onChange={un => setUsername(un)}
+                        name="username"
+                        value={registrationValues.username}
+                        onChange={handleChange}
                     />
+                    {notification && <Alert variant={"danger"}>Spaces in the username are not allowed!</Alert>}
                     <FormField
                         label="Password"
                         type="password"
-                        value={password}
-                        onChange={n => setPassword(n)}
+                        name="password"
+                        value={registrationValues.password}
+                        onChange={handleChange}
                     />
                     <div className="login button-container">
                         <Button
@@ -57,7 +76,7 @@ const Registration = props => {
                         </Button>
                         <Button
                             className="login stacked-button-container-right"
-                            disabled={!username || !password}
+                            disabled={!registrationValues.username || !registrationValues.password}
                             width="100%"
                             onClick={() => doRegistration()}
                         >

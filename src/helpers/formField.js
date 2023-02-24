@@ -16,7 +16,8 @@ export const FormField = props => {
                    className="login input"
                    placeholder="enter here.."
                    value={props.value}
-                   onChange={e => props.onChange(e.target.value)}
+                   name={props.name}
+                   onChange={e => props.onChange(e)}
             />
         </div>
     );
