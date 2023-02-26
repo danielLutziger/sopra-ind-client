@@ -6,6 +6,7 @@ import {useHistory, useParams} from "react-router-dom";
 import {Badge} from "react-bootstrap";
 import {Button} from "../ui/Button";
 import {Spinner} from "../ui/Spinner";
+import ProfileEdit from "./ProfileEdit"
 
 
 const Profile = props => {
@@ -41,9 +42,32 @@ const Profile = props => {
         fetchData();
     }, []);
 
+    const submit = async (editValues) => {
+        if (user.username !== editValues.username || (user.birthday !== editValues.birthday && editValues.birthday)) {
+            const token = localStorage.getItem('token');
+            const config = {
+                headers: {Authorization: `Bearer ${token}`}
+            };
+            const response = await api.put(`/users/${id}`, editValues, config);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Get the returned users and update the state.
+            const current = {...user, ...editValues};
+            setUser(current);
+
+            console.log('request to:', response.request.responseURL);
+            console.log('status code:', response.status);
+            console.log('status text:', response.statusText);
+            console.log('requested data:', response.data);
+
+            // See here to get more data.
+            console.log(response);
+        }
+    }
 
     let content = <Spinner/>;
     if (user) {
+        user.birthday = user.birthday.split('T')[0];
+        user.creationDate = user.creationDate.split('T')[0];
         content = (
             <div className="game">
                 <div className="profile container">
@@ -58,15 +82,17 @@ const Profile = props => {
                     </div>
                     <div className="profile singleRow">
                         <div className="profile birthday">Registration date</div>
-                        <div className="profile right">{user.creationDate.split('T')[0]}</div>
+                        <div className="profile right">{user.creationDate}</div>
                     </div>
                 </div>
+                {user.id == localStorage.getItem('id') && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
                 <Button
                     width="100%"
                     onClick={() => history.goBack()}
                 >
                     Back
                 </Button>
+
             </div>
         );
     }

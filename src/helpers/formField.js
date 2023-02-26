@@ -17,6 +17,7 @@ export const FormField = props => {
                    placeholder="enter here.."
                    value={props.value}
                    name={props.name}
+                   pattern={'yyyy-mm-dd'}
                    onChange={e => props.onChange(e)}
             />
         </div>

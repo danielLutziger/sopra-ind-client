@@ -1,0 +1,9 @@
+@import 'styles/theme';
+
+.customModal {
+  &.customContainer {
+    background-color: #313140;
+    font-weight: 300;
+    font-size: 16px;
+  }
+}
