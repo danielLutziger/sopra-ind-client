@@ -44,26 +44,32 @@ const Profile = props => {
 
     const submit = async (editValues) => {
         if (user.username !== editValues.username || (user.birthday !== editValues.birthday && editValues.birthday)) {
-            const token = localStorage.getItem('token');
-            const config = {
-                headers: {Authorization: `Bearer ${token}`}
-            };
-            const response = await api.put(`/users/${id}`, editValues, config);
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            // Get the returned users and update the state.
-            const current = {...user, ...editValues};
-            setUser(current);
+            try{
+                const token = localStorage.getItem('token');
+                const config = {
+                    headers: {Authorization: `Bearer ${token}`}
+                };
+                const response = await api.put(`/users/${id}`, editValues, config);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Get the returned users and update the state.
+                const current = {...user, ...editValues};
+                setUser(current);
 
-            localStorage.setItem('token', response.headers['access-token'])
+                localStorage.setItem('token', response.headers['access-token'])
 
-            console.log('request to:', response.headers['access-token']);
-            console.log('request to:', response.request.responseURL);
-            console.log('status code:', response.status);
-            console.log('status text:', response.statusText);
-            console.log('requested data:', response.data);
+                console.log('request to:', response.headers['access-token']);
+                console.log('request to:', response.request.responseURL);
+                console.log('status code:', response.status);
+                console.log('status text:', response.statusText);
+                console.log('requested data:', response.data);
 
-            // See here to get more data.
-            console.log(response);
+                // See here to get more data.
+                console.log(response);
+            }catch (error) {
+                console.error(`Something went wrong while fetching the user: \n${handleError(error)}`);
+                console.error("Details:", error);
+                alert(`Something went wrong during the login: \n${handleError(error)}`);
+            }
         }
     }
 
@@ -91,6 +97,7 @@ const Profile = props => {
                 {user.id == localStorage.getItem('id') && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
                 <Button
                     width="100%"
+                    style={{marginTop: "1em"}}
                     onClick={() => history.goBack()}
                 >
                     Back

@@ -29,7 +29,23 @@ const Game = () => {
     // more information can be found under https://reactjs.org/docs/hooks-state.html
     const [users, setUsers] = useState(null);
 
-    const logout = () => {
+    const logout = async () => {
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: {Authorization: `Bearer ${token}`}
+        };
+        const response = await api.post(`/signout`, localStorage.getItem('id'), config);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        // This is just some data for you to see what is available.
+        // Feel free to remove it.
+        console.log('request to:', response.request.responseURL);
+        console.log('status code:', response.status);
+        console.log('status text:', response.statusText);
+        console.log('requested data:', response.data);
+
+        // See here to get more data.
+        console.log(response);
+
         localStorage.removeItem('id');
         localStorage.removeItem('token');
         history.push('/login');

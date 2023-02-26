@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import {Button} from "../ui/Button";
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import {FormField} from "../../helpers/formField";
@@ -27,13 +27,13 @@ const ProfileEdit = props => {
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>
+            <Button width="100%" onClick={handleShow}>
                 Edit
             </Button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Edit your information</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className={"customModal customContainer"} >
                     <Form>
