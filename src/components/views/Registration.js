@@ -19,6 +19,10 @@ const Registration = props => {
             const requestBody = JSON.stringify(registrationValues);
             const response = await api.post('/registration', requestBody);
 
+            console.log('request to:', response.request.responseURL);
+            console.log('status code:', response.status);
+            console.log('status text:', response.statusText);
+            console.log('requested data:', response.data);
             // Get the returned user and update a new object.
             const user = new User(response.data);
 
