@@ -9,14 +9,11 @@ import 'styles/views/Modal.scss';
 const ProfileEdit = props => {
     const [show, setShow] = useState(false);
     const [editValues, setEditValues] = useState({ username: props.username, birthday: props.birthday});
-    console.log(props.birthday)
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        console.log(name)
-        console.log(value)
         setEditValues((prevState) => ({
             ...prevState,
             [name]: value,

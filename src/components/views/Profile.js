@@ -54,6 +54,9 @@ const Profile = props => {
             const current = {...user, ...editValues};
             setUser(current);
 
+            localStorage.setItem('token', response.headers['access-token'])
+
+            console.log('request to:', response.headers['access-token']);
             console.log('request to:', response.request.responseURL);
             console.log('status code:', response.status);
             console.log('status text:', response.statusText);
@@ -66,7 +69,7 @@ const Profile = props => {
 
     let content = <Spinner/>;
     if (user) {
-        user.birthday = user.birthday.split('T')[0];
+        user.birthday = user.birthday ? user.birthday.split('T')[0] : user.birthday;
         user.creationDate = user.creationDate.split('T')[0];
         content = (
             <div className="game">
