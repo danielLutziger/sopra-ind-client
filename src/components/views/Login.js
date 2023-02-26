@@ -10,12 +10,11 @@ import {FormField} from "../../helpers/formField";
 
 const Login = props => {
     const history = useHistory();
-    const [password, setPassword] = useState(null);
-    const [username, setUsername] = useState(null);
+    const [loginValues, setLoginValues] = useState({ username: "", password: "" });
 
     const doLogin = async () => {
         try {
-            const requestBody = JSON.stringify({username, password});
+            const requestBody = JSON.stringify(loginValues);
             const response = await api.post('/login', requestBody);
 
             // Get the returned user and update a new object.
@@ -35,6 +34,14 @@ const Login = props => {
         history.push(`/registration`);
     }
 
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setLoginValues((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
     return (
         <BaseContainer>
             <div className="login container">
@@ -42,14 +49,16 @@ const Login = props => {
                     <FormField
                         label="Username"
                         type="text"
-                        value={username}
-                        onChange={un => setUsername(un)}
+                        name="username"
+                        value={loginValues.username}
+                        onChange={handleChange}
                     />
                     <FormField
                         label="Password"
                         type="password"
-                        value={password}
-                        onChange={n => setPassword(n)}
+                        name="password"
+                        value={loginValues.password}
+                        onChange={handleChange}
                     />
                     <div className="login button-container">
                         <Button
@@ -61,7 +70,7 @@ const Login = props => {
                         </Button>
                         <Button
                             className="login stacked-button-container-right"
-                            disabled={!username || !password}
+                            disabled={!loginValues.username || !loginValues.password}
                             width="100%"
                             onClick={() => doLogin()}
                         >

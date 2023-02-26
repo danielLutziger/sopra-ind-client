@@ -9,7 +9,7 @@ import "styles/views/Game.scss";
 
 const Player = ({user}) => (
   <div className="player container">
-    <div className="player username">{user.username}</div>
+    <div><a className="player username" href={`/game/dashboard/profile/${user.id}`}>{user.username}</a></div>
     <div className="player id">id: {user.id}</div>
   </div>
 );
@@ -42,7 +42,11 @@ const Game = () => {
     // effect callbacks are synchronous to prevent race conditions. So we put the async function inside:
     async function fetchData() {
       try {
-        const response = await api.get('/users');
+          const token = localStorage.getItem('token');
+          const config = {
+              headers: { Authorization: `Bearer ${token}` }
+          };
+        const response = await api.get('/users', config);
 
         // delays continuous execution of an async operation for 1 second.
         // This is just a fake async call, so that the spinner can be displayed

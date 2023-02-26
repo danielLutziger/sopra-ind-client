@@ -1,0 +1,81 @@
+import React, {useEffect, useState} from 'react';
+import 'styles/views/Login.scss';
+import BaseContainer from "components/ui/BaseContainer";
+import {api, handleError} from "../../helpers/api";
+import {useHistory, useParams} from "react-router-dom";
+import {Badge} from "react-bootstrap";
+import {Button} from "../ui/Button";
+import {Spinner} from "../ui/Spinner";
+
+
+const Profile = props => {
+    const [user, setUser] = useState(null);
+    const history = useHistory();
+    const {id} = useParams(); // parameters passed from the browser router :1, :2 .. the userid of the selection
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const token = localStorage.getItem('token');
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+                const response = await api.get(`/users/${id}`, config);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                // Get the returned users and update the state.
+                setUser(response.data);
+
+                console.log('request to:', response.request.responseURL);
+                console.log('status code:', response.status);
+                console.log('status text:', response.statusText);
+                console.log('requested data:', response.data);
+
+                // See here to get more data.
+                console.log(response);
+            } catch (error) {
+                console.error(`Something went wrong while fetching the user: \n${handleError(error)}`);
+                console.error("Details:", error);
+                alert("Something went wrong while fetching the users! See the console for details.");
+            }
+        }
+
+        fetchData();
+    }, []);
+
+
+    let content = <Spinner/>;
+    if (user) {
+        content = (
+            <div className="game">
+                <div className="profile container">
+                    <div className="profile singleRow">
+                        <div className="player username">{user.username}</div>
+                        <Badge className="profile right"
+                               bg={user.status === "OFFLINE" ? "danger" : "success"}>{user.status}</Badge>
+                    </div>
+                    <div className="profile singleRow">
+                        <div className="profile birthday">Birthday</div>
+                        <div className="profile right">{user.birthday || 'Not Available'}</div>
+                    </div>
+                    <div className="profile singleRow">
+                        <div className="profile birthday">Registration date</div>
+                        <div className="profile right">{user.creationDate.split('T')[0]}</div>
+                    </div>
+                </div>
+                <Button
+                    width="100%"
+                    onClick={() => history.goBack()}
+                >
+                    Back
+                </Button>
+            </div>
+        );
+    }
+
+    return (
+        <BaseContainer className="game container">
+            {content}
+        </BaseContainer>
+    );
+};
+
+export default Profile;

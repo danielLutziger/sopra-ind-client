@@ -42,12 +42,9 @@
     align-items: center;
     background: lighten($background, 5);
   }
-  &.name {
-    font-weight: 300;
-    margin-left: 5px;
-  }
   &.username {
     font-weight: 500;
+    text-decoration: none;
     color: $accent;
   }
   &.id {
@@ -55,5 +52,28 @@
     margin-right: 10px;
     font-family: $fontMono;
     font-weight: 300;
+  }
+}
+
+.profile {
+  &.container {
+    margin: 0.5em 0;
+    width: 20em;
+    padding: 10px;
+    border-radius: $borderRadius;
+    display: block;
+    align-items: center;
+    background: lighten($background, 5);
+  }
+  &.singleRow {
+    display: flex;
+  }
+  &.username {
+    font-weight: 500;
+    color: $accent;
+  }
+  &.right {
+    margin-left: auto;
+    margin-right: 10px;
   }
 }
