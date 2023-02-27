@@ -40,7 +40,7 @@ const Profile = props => {
         }
 
         fetchData();
-    }, []);
+    }, [id]);
 
     const submit = async (editValues) => {
         if (user.username !== editValues.username || (user.birthday !== editValues.birthday && editValues.birthday)) {
@@ -94,7 +94,7 @@ const Profile = props => {
                         <div className="profile right">{user.creationDate}</div>
                     </div>
                 </div>
-                {user.id == localStorage.getItem('id') && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
+                {user.id === parseInt(localStorage.getItem('id')) && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
                 <Button
                     width="100%"
                     style={{marginTop: "1em"}}
