@@ -9,7 +9,7 @@ import {Spinner} from "../ui/Spinner";
 import ProfileEdit from "./ProfileEdit"
 
 
-const Profile = props => {
+const Profile = () => {
     const [user, setUser] = useState(null);
     const [edit, setEdit] = useState(null);
     const history = useHistory();
@@ -43,7 +43,7 @@ const Profile = props => {
         }
 
         fetchData();
-    }, []);
+    });
 
     const submit = async (editValues) => {
         if (user.username !== editValues.username || (user.birthday !== editValues.birthday && editValues.birthday)) {
