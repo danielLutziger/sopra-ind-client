@@ -14,7 +14,7 @@ const Login = () => {
     const doLogin = async () => {
         try {
             const requestBody = JSON.stringify(loginValues);
-            const response = await api.put('/login', requestBody);
+            const response = await api.post('/login', requestBody);
 
             // Store the token into the local storage.
             localStorage.setItem('token', response.headers['access-token']);
