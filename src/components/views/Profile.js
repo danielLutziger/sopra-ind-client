@@ -26,7 +26,7 @@ const Profile = () => {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 // Get the returned users and update the state.
                 setUser(response.data);
-                setEdit(response.headers['access-token']);
+                setEdit(response.headers['edit-access']);
 
                 console.log('request to:', response.request.responseURL);
                 console.log('status code:', response.status);
@@ -43,7 +43,7 @@ const Profile = () => {
         }
 
         fetchData();
-    });
+    }, [id]);
 
     const submit = async (editValues) => {
         if (user.username !== editValues.username || (user.birthday !== editValues.birthday && editValues.birthday)) {
@@ -59,7 +59,7 @@ const Profile = () => {
                 setUser(current);
 
                 localStorage.setItem('token', response.headers['access-token'])
-                setEdit(response.headers['access-token']);
+                setEdit(response.headers['edit-access']);
 
                 console.log('request to:', response.headers['access-token']);
                 console.log('request to:', response.request.responseURL);
@@ -98,7 +98,7 @@ const Profile = () => {
                         <div className="profile right">{user.creationDate}</div>
                     </div>
                 </div>
-                {edit === localStorage.getItem('token') && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
+                {edit === "true" && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
                 <Button
                     width="100%"
                     style={{marginTop: "1em"}}
