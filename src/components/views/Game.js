@@ -34,7 +34,7 @@ const Game = () => {
         const config = {
             headers: {Authorization: `Bearer ${token}`}
         };
-        const response = await api.post(`/signout`, localStorage.getItem('id'), config);
+        const response = await api.put(`/signout`, null, config);
         await new Promise(resolve => setTimeout(resolve, 1000));
         // This is just some data for you to see what is available.
         // Feel free to remove it.

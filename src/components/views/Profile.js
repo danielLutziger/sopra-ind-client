@@ -11,8 +11,10 @@ import ProfileEdit from "./ProfileEdit"
 
 const Profile = props => {
     const [user, setUser] = useState(null);
+    const [edit, setEdit] = useState(null);
     const history = useHistory();
     const {id} = useParams(); // parameters passed from the browser router :1, :2 .. the userid of the selection
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -24,6 +26,7 @@ const Profile = props => {
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 // Get the returned users and update the state.
                 setUser(response.data);
+                setEdit(response.headers['access-token']);
 
                 console.log('request to:', response.request.responseURL);
                 console.log('status code:', response.status);
@@ -56,6 +59,7 @@ const Profile = props => {
                 setUser(current);
 
                 localStorage.setItem('token', response.headers['access-token'])
+                setEdit(response.headers['access-token']);
 
                 console.log('request to:', response.headers['access-token']);
                 console.log('request to:', response.request.responseURL);
@@ -94,7 +98,7 @@ const Profile = props => {
                         <div className="profile right">{user.creationDate}</div>
                     </div>
                 </div>
-                {user.id == localStorage.getItem('id') && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
+                {edit === localStorage.getItem('token') && <ProfileEdit id={id} username={user.username} birthday={user.birthday} submit={submit}>Edit entries</ProfileEdit>}
                 <Button
                     width="100%"
                     style={{marginTop: "1em"}}
