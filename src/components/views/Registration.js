@@ -8,7 +8,7 @@ import {FormField} from "../../helpers/formField";
 import {Alert} from "react-bootstrap";
 
 
-const Registration = props => {
+const Registration = () => {
     const history = useHistory();
     const [registrationValues, setRegistrationValues] = useState({ username: "", password: "" });
     const [notification, setNotification] = useState(false);

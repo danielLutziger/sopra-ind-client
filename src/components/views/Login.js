@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {api, handleError} from 'helpers/api';
-import User from 'models/User';
 import {useHistory} from 'react-router-dom';
 import {Button} from 'components/ui/Button';
 import 'styles/views/Login.scss';
@@ -8,7 +7,7 @@ import BaseContainer from "components/ui/BaseContainer";
 import {FormField} from "../../helpers/formField";
 
 
-const Login = props => {
+const Login = () => {
     const history = useHistory();
     const [loginValues, setLoginValues] = useState({ username: "", password: "" });
 
@@ -16,9 +15,6 @@ const Login = props => {
         try {
             const requestBody = JSON.stringify(loginValues);
             const response = await api.put('/login', requestBody);
-
-            // Get the returned user and update a new object.
-            const user = new User(response.data);
 
             // Store the token into the local storage.
             localStorage.setItem('token', response.headers['access-token']);
