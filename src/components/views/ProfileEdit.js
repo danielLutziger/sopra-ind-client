@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import {FormField} from "../../helpers/formField";
 import 'styles/views/Modal.scss';
+import {Alert} from "react-bootstrap";
 
 
 const ProfileEdit = props => {
@@ -11,9 +12,17 @@ const ProfileEdit = props => {
     const [editValues, setEditValues] = useState({ username: props.username, birthday: props.birthday});
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [notification, setNotification] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
+        if (name === "username" && /\s/.test(value)) {
+            setNotification(true);
+            return; // Do not update the state if the first name contains spaces
+        } else {
+            setNotification(false);
+        }
+
         setEditValues((prevState) => ({
             ...prevState,
             [name]: value,
@@ -44,6 +53,7 @@ const ProfileEdit = props => {
                         value={editValues.username}
                         onChange={handleChange}
                     />
+                        {notification && <Alert variant={"danger"}>Spaces in the username are not allowed!</Alert>}
                         <FormField
                             label="Birthday"
                             type="date"
@@ -57,7 +67,7 @@ const ProfileEdit = props => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={submit}>
+                    <Button variant="primary" disabled={!editValues.username} onClick={submit}>
                         Edit user
                     </Button>
                 </Modal.Footer>
